@@ -1,116 +1,265 @@
 # EmotiSense: Real-time Emotion Detection System
 
-A real-time emotion detection system powered by OpenCV and DeepFace, capable of analyzing facial expressions and emotional states through webcam. Features include real-time face detection, emotion tracking, high-confidence emotion logging (>95%), and emotion trend analysis with DeepSeek API integration.
+A professional, modular real-time emotion detection system powered by OpenCV and DeepFace, capable of analyzing facial expressions and emotional states through webcam. Features include real-time face detection, emotion tracking, high-confidence emotion logging (>95%), and emotion trend analysis with DeepSeek API integration.
 
-# 实时情绪检测系统
+## ✨ Features
 
-这是一个基于OpenCV和DeepFace的实时情绪检测系统，可以通过摄像头实时检测人脸表情并分析情绪状态。
+- 🎥 **Real-time Face Detection** - Haar Cascade-based face and eye tracking
+- 😊 **Multiple Emotion Models** - Choose from HSEmotion, FER, DeepFace, or Ensemble
+- 🏆 **State-of-the-Art Accuracy** - HSEmotion achieves 66%+ accuracy on AffectNet
+- 📊 **High-Confidence Logging** - Automatic logging of emotions >95% confidence
+- 🤖 **AI-Powered Analysis** - DeepSeek API integration for emotion trend analysis
+- ⚡ **Performance Optimized** - Frame skipping, memory management, smooth tracking
+- 🏗️ **Modular Architecture** - Clean, maintainable, object-oriented design
+- ⚙️ **Configurable** - YAML-based configuration for easy customization
+- 🔬 **Model Comparison Tool** - Compare different models side-by-side
 
-## 功能特点
+## 🏗️ Project Structure
 
-- 实时人脸检测和眼睛追踪
-- 情绪状态实时分析
-- 高强度情绪记录（置信度>95%）
-- 情绪数据日志记录
-- DeepSeek API集成的情绪趋势分析
+```
+EmotiSense/
+├── src/
+│   ├── __init__.py          # Package initialization
+│   ├── config.py            # Configuration management
+│   ├── detector.py          # Face and emotion detection
+│   ├── video_processor.py   # Video capture and processing
+│   ├── data_manager.py      # Data storage and logging
+│   ├── analyzer.py          # DeepSeek API integration
+│   └── ui.py                # UI rendering
+├── main.py                  # Application entry point
+├── config.yaml              # Configuration file
+├── requirements.txt         # Python dependencies
+├── .env.example             # Environment variables template
+└── README.md                # This file
+```
 
-## 环境要求
+## 📋 Requirements
 
 - Python 3.7+
-- OpenCV
-- DeepFace
-- TensorFlow
+- Webcam
+- (Optional) DeepSeek API key for emotion analysis
 
-## 依赖安装
+## 🚀 Installation
 
+1. **Clone the repository**
 ```bash
+git clone <repository-url>
+cd EmotiSense-Real-time-Emotion-Detection-System
+```
+
+2. **Install dependencies**
+```bash
+# Basic installation (DeepFace only)
 pip install -r requirements.txt
+
+# Or use the interactive installer for advanced models
+python install_models.py
 ```
 
-## 配置说明
+3. **Install advanced models** (Optional but recommended)
+```bash
+# HSEmotion (Recommended - fast and accurate)
+pip install hsemotion timm
 
-1. 创建`.env`文件并配置DeepSeek API密钥：
+# FER (Lightweight alternative)
+pip install fer
+
+# Or install all models
+pip install hsemotion timm fer
 ```
+
+4. **Configure environment variables**
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env and add your DeepSeek API key
 DEEPSEEK_API_KEY=your_api_key_here
 ```
 
-## 使用方法
+5. **Select your emotion model**
+Edit `config.yaml`:
+```yaml
+emotion:
+  detector_type: 'hsemotion'  # Options: 'hsemotion', 'fer', 'deepface', 'ensemble'
+```
 
-1. 运行程序：
+## 🎮 Usage
+
+### Basic Usage
+
+**Start the application:**
 ```bash
 python main.py
 ```
 
-2. 操作说明：
-- 程序启动后会自动打开摄像头
-- 实时显示检测到的人脸和情绪状态
-- 按'q'或'ESC'键退出程序
+**Controls:**
+- Press `q` or `ESC` to quit
+- The application will automatically:
+  - Detect faces and emotions in real-time
+  - Log high-confidence emotions to `emotion_log.txt`
+  - Analyze emotion trends on exit (if API key is configured)
 
-## 输出说明
+### Compare Models
 
-- 实时显示：显示摄像头画面，包含人脸框、眼睛框和情绪状态
-- 日志文件：`emotion_log.txt`记录高强度情绪状态（>95%置信度）
-- 情绪分析：程序结束时会对收集的情绪数据进行分析
+**Compare different emotion recognition models:**
+```bash
+# Real-time webcam comparison
+python compare_models.py --mode webcam --duration 30
 
-## 性能优化
+# Compare on a single image
+python compare_models.py --mode image --image path/to/image.jpg
+```
 
-- 降低分辨率（640x360）以减少处理负担
-- 帧跳过机制（每2帧处理一次）
-- 定期清理旧数据以控制内存使用
-- 人脸框位置平滑处理，提供更稳定的显示效果
+This will show you:
+- Emotion predictions from each model
+- Inference time for each model
+- Emotion distribution statistics
 
-## 技术实现
+## 📊 Output
 
-### 1. 情绪检测引擎
-- 使用DeepFace库作为核心情绪分析引擎
-  - 预训练模型支持7种基本情绪识别
-  - 实时分析每帧图像中的面部表情
-  - 输出情绪类型和置信度
+- **Real-time Display**: Video feed with face boxes, eye boxes, and emotion labels
+- **Log File**: `emotion_log.txt` - High-confidence emotion records (>95%)
+- **Analysis Report**: AI-generated emotion trend analysis (appended to log file)
 
-### 2. 视频处理流程
-- 基于OpenCV实现实时视频捕获和处理
-  - 使用cv2.VideoCapture获取摄像头数据流
-  - 应用Haar级联分类器进行人脸和眼睛检测
-  - 图像预处理：缩放、灰度转换、直方图均衡化
+## ⚙️ Configuration
 
-### 3. 数据分析与API集成
-- 情绪数据收集和存储
-  - 实时记录高置信度（>95%）的情绪状态
-  - 使用时间序列存储情绪变化趋势
-- DeepSeek API集成
-  - 定期发送情绪数据进行深度分析
-  - 生成个性化情绪趋势报告
+The `config.yaml` file allows you to customize:
 
-### 4. 性能优化策略
-- 图像处理优化
-  - 降低分辨率（640x360）
-  - 帧跳过处理（每2帧分析一次）
-  - ROI区域动态调整
-- 内存管理
-  - 定期清理历史数据
-  - 限制情绪记录数量（最大1000条）
-  - 采用数据流式处理减少内存占用
+- **Video Settings**: Resolution, FPS, frame skip rate
+- **Detection Parameters**: Face/eye detection thresholds, smoothing
+- **Emotion Settings**: Detection interval, confidence thresholds
+- **UI Appearance**: Colors, fonts, window mode
+- **Data Management**: Log file location, cleanup intervals
 
-## 内存占用
+Example configuration:
+```yaml
+video:
+  frame_width: 640
+  frame_height: 360
+  frame_skip: 2
 
-- 图像处理：
-  - 摄像头帧缓存：约 0.7MB (640x360 分辨率)
-  - 人脸ROI区域：约 0.1MB
-  - 灰度图像：约 0.2MB
+emotion:
+  detection_interval: 3.0
+  high_confidence_threshold: 95
+```
 
-- 模型加载：
-  - DeepFace模型：约 100MB
-  - 人脸检测级联分类器：约 2MB
-  - 眼睛检测级联分类器：约 1MB
+## 🔧 Performance Optimization
 
-- 数据存储：
-  - 情绪数据列表：最大 1000条记录，约 0.5MB
-  - 日志文件：根据使用时长动态增长
+- **Reduced Resolution**: 640x360 default (configurable)
+- **Frame Skipping**: Process every Nth frame (default: 2)
+- **Memory Management**: Automatic cleanup of old data (max 1000 records)
+- **Smooth Tracking**: Exponential smoothing for stable face boxes
+- **Lazy Loading**: Models loaded on first use
 
-总体运行内存占用：约 150-200MB
+**Memory Usage**: ~150-200MB total
+- DeepFace model: ~100MB
+- Video buffers: ~1MB
+- Emotion data: <1MB (with cleanup)
 
-## 注意事项
+## 🏛️ Architecture
 
-1. 确保摄像头可正常使用
-2. 保持适当的光照条件以提高检测准确度
-3. 建议在相对安静的环境中使用，以获得更准确的情绪分析结果
+### Modular Design
+
+The application follows a clean, modular architecture with separation of concerns:
+
+1. **Config Module** (`config.py`)
+   - Centralized configuration management
+   - YAML-based settings
+   - Environment variable handling
+
+2. **Detector Module** (`detector.py`)
+   - `FaceDetector`: Face and eye detection with Haar Cascades
+   - `EmotionDetector`: Emotion analysis using DeepFace
+   - Smooth tracking and confidence filtering
+
+3. **Video Processor** (`video_processor.py`)
+   - `VideoCapture`: Camera management with context manager
+   - `FrameProcessor`: Frame manipulation utilities
+   - Frame skipping logic
+
+4. **Data Manager** (`data_manager.py`)
+   - `EmotionRecord`: Data class for emotion records
+   - `EmotionDataManager`: Storage, logging, and statistics
+   - Automatic cleanup and memory management
+
+5. **Analyzer** (`analyzer.py`)
+   - `EmotionAnalyzer`: DeepSeek API integration
+   - Emotion trend analysis
+   - Result formatting
+
+6. **UI Renderer** (`ui.py`)
+   - `UIRenderer`: Display window and visual elements
+   - Configurable colors, fonts, and styles
+   - Drawing utilities for boxes and text
+
+7. **Main Application** (`main.py`)
+   - `EmotionDetectionApp`: Main application orchestrator
+   - Event loop and lifecycle management
+   - Component integration
+
+### Design Patterns Used
+
+- **Singleton Pattern**: Configuration management
+- **Context Manager**: Resource cleanup (video capture, UI)
+- **Data Class**: Structured emotion records
+- **Dependency Injection**: Components receive config instance
+- **Separation of Concerns**: Each module has single responsibility
+
+## 🔍 Technical Details
+
+### Emotion Detection Models
+
+EmotiSense supports multiple state-of-the-art emotion recognition models:
+
+| Model | Accuracy | Speed | Size | Emotions | Best For |
+|-------|----------|-------|------|----------|----------|
+| **HSEmotion** ⭐ | 66%+ | ~60ms | 16-30MB | 7 or 8 | Production, Real-time |
+| **FER** | ~65% | ~150ms | ~5MB | 7 | Lightweight apps |
+| **DeepFace** | ~60-65% | ~300ms | ~100MB | 7 | Multi-task analysis |
+| **Ensemble** | Highest | Slowest | Combined | 7-8 | Maximum accuracy |
+
+**Supported Emotions:**
+- 7-class: angry, disgust, fear, happy, neutral, sad, surprise
+- 8-class: + contempt (HSEmotion only)
+
+**Model Details:**
+- **HSEmotion**: Pre-trained on VGGFace2 + AffectNet, ABAW competition winner
+- **FER**: CNN-based, trained on FER2013 dataset
+- **DeepFace**: Hybrid framework with multiple backends
+- **Ensemble**: Combines multiple models for better accuracy
+
+See [ADVANCED_MODELS.md](ADVANCED_MODELS.md) for detailed comparison and usage guide.
+
+### Face Detection
+- **Method**: OpenCV Haar Cascade Classifiers
+- **Features**: Face and eye detection
+- **Smoothing**: Exponential smoothing to reduce jitter
+- **Parameters**: Configurable scale factor, min/max size
+
+### Data Management
+- **Format**: Timestamped emotion records with confidence
+- **Storage**: In-memory list with automatic cleanup
+- **Logging**: High-confidence emotions to text file
+- **Statistics**: Emotion counts, averages, time spans
+
+## 📝 Notes
+
+1. **Camera Access**: Ensure your webcam is accessible and not in use by other applications
+2. **Lighting**: Good lighting conditions improve detection accuracy
+3. **API Key**: DeepSeek API key is optional; the system works without it (no trend analysis)
+4. **Privacy**: All processing is done locally; only emotion logs are sent to API (if enabled)
+
+## 🤝 Contributing
+
+This is a refactored version of an early learning project. Contributions are welcome!
+
+## 📄 License
+
+This project is open source and available for educational purposes.
+
+## 🙏 Acknowledgments
+
+- **DeepFace**: Emotion detection library
+- **OpenCV**: Computer vision framework
+- **DeepSeek**: AI-powered emotion analysis

@@ -1,0 +1,72 @@
+# EmotiSense Configuration File
+
+# Video Capture Settings
+video:
+  camera_index: 0
+  frame_width: 640
+  frame_height: 360
+  fps: 30
+  frame_skip: 2  # Process every Nth frame
+
+# Face Detection Settings
+face_detection:
+  scale_factor: 1.1
+  min_neighbors: 3
+  min_size: [80, 80]
+  max_size: [300, 300]
+  smoothing_factor: 0.3  # For smooth face tracking
+
+# Eye Detection Settings
+eye_detection:
+  scale_factor: 1.1
+  min_neighbors: 3
+  min_size: [20, 20]
+
+# Emotion Detection Settings
+emotion:
+  # Detector selection: 'deepface', 'hsemotion', 'fer', 'ensemble'
+  detector_type: 'hsemotion'
+
+  detection_interval: 3.0  # Seconds between emotion analysis
+  high_confidence_threshold: 95  # Percentage
+  anger_threshold: 50  # Special threshold for anger emotion
+  max_data_records: 1000  # Maximum emotion records to keep
+
+  # HSEmotion specific settings
+  # Available models: enet_b0_8_best_afew, enet_b0_8_best_vgaf, enet_b2_8, enet_b0_7, enet_b2_7
+  hsemotion_model: 'enet_b0_8_best_afew'
+
+  # FER specific settings
+  fer_use_mtcnn: false  # Use MTCNN for face detection in FER (slower but more accurate)
+
+  # Ensemble settings (when detector_type is 'ensemble')
+  ensemble_models:
+    - 'hsemotion'
+    # - 'fer'  # Uncomment to add FER to ensemble
+
+# Data Management
+data:
+  cleanup_interval: 30  # Seconds between data cleanup
+  log_file: "emotion_log.txt"
+  enable_logging: true
+
+# DeepSeek API Settings
+api:
+  enabled: true
+  model: "deepseek-chat"
+  endpoint: "https://api.deepseek.com/v1/chat/completions"
+  analysis_prompt: "分析以下情绪检测数据，找出主要情绪趋势和重要变化点：\n"
+
+# UI Settings
+ui:
+  window_name: "情绪检测"
+  window_mode: "normal"  # normal or fullscreen
+  font_scale: 0.7
+  font_thickness: 2
+  font_color: [255, 255, 255]  # White
+  font_outline_color: [0, 0, 0]  # Black
+  font_outline_thickness: 3
+  face_box_color: [255, 0, 0]  # Blue
+  eye_box_color: [0, 255, 0]  # Green
+  box_thickness: 2
+
