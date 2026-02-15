@@ -10,6 +10,7 @@ from .analyzer import EmotionAnalyzer
 from .config import Config, get_config
 from .data_manager import EmotionDataManager
 from .detector import FaceDetector, create_emotion_detector
+from .product_ops import SessionReporter
 from .ui import UIRenderer
 from .video_processor import FrameProcessor, VideoCapture
 
@@ -28,6 +29,7 @@ class EmotionDetectionApp:
         self.emotion_detector = create_emotion_detector(self.config)
         self.data_manager = EmotionDataManager(self.config)
         self.analyzer = EmotionAnalyzer(self.config)
+        self.reporter = SessionReporter(self.config, analyzer=self.analyzer)
         self.ui = UIRenderer(self.config)
 
         self.last_detection_time = time.time()
@@ -97,24 +99,16 @@ class EmotionDetectionApp:
 
     def perform_final_analysis(self):
         records = self.data_manager.get_all_records()
-        if not records:
-            logger.info("No emotion data to analyze")
-            return
+        logger.info("Collected %s in-memory emotion records", len(records))
+        logger.info("Current statistics: %s", self.data_manager.get_statistics())
 
-        logger.info("Analyzing %s emotion records...", len(records))
-        stats = self.data_manager.get_statistics()
-        logger.info("Statistics: %s", stats)
+        exported = self.reporter.export(self.data_manager, mode="realtime")
+        snapshot = exported["snapshot"]
+        analysis = snapshot.get("analysis_text")
+        if analysis:
+            formatted = self.analyzer.format_analysis_result(analysis)
+            print(formatted)
+            self.data_manager.append_to_log(formatted)
 
-        log_lines = self.data_manager.read_log_file()
-        if not log_lines:
-            return
-
-        analysis = self.analyzer.analyze_emotion_logs(log_lines)
-        if not analysis:
-            logger.warning("Failed to get analysis from DeepSeek API")
-            return
-
-        formatted = self.analyzer.format_analysis_result(analysis)
-        print(formatted)
-        self.data_manager.append_to_log(formatted)
-        logger.info("Analysis saved to log file")
+        logger.info("Session report exported: %s", exported["json_path"])
+        logger.info("Session report exported: %s", exported["md_path"])

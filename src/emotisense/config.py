@@ -29,7 +29,9 @@ class Config:
             config_path = Path(__file__).resolve().parents[2] / "config.yaml"
         else:
             config_path = Path(config_path)
-            
+
+        self.config_path = config_path
+
         # Load configuration
         self._config: Dict[str, Any] = self._load_config(config_path)
         

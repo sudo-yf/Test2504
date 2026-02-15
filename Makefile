@@ -1,4 +1,4 @@
-.PHONY: sync sync-train lint format test check run download-data download-data-hf train-face finetune-emotion docker-build docker-run
+.PHONY: sync sync-train lint format test check run doctor report download-data download-data-hf train-face finetune-emotion docker-build docker-run release-bundle
 
 sync:
 	uv sync
@@ -20,6 +20,12 @@ check: lint test
 run:
 	uv run python main.py
 
+doctor:
+	uv run python main.py doctor --check-camera
+
+report:
+	uv run python main.py report --mode offline
+
 download-data:
 	uv run python scripts/download_datasets.py --preset fer2013 --local-dir data/raw
 
@@ -37,3 +43,6 @@ docker-build:
 
 docker-run:
 	docker compose run --rm emotisense
+
+release-bundle:
+	python3 scripts/release_bundle.py

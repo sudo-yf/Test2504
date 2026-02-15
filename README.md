@@ -104,7 +104,21 @@ uv run python scripts/finetune_emotion.py \
 uv run python main.py
 ```
 
-### 5. 质量检查
+### 5. 运行前自检与离线报告
+
+运行前自检（配置、数据库、日志路径、摄像头）：
+
+```bash
+uv run python main.py doctor --check-camera
+```
+
+离线生成分析报告（从现有数据库和日志）：
+
+```bash
+uv run python main.py report --mode offline
+```
+
+### 6. 质量检查
 
 ```bash
 make lint
@@ -116,7 +130,8 @@ make check
 
 - 运行时记录高置信度情绪事件
 - 数据写入 SQLite 与文本日志
-- 退出阶段执行统计与趋势分析
+- 退出阶段自动导出 JSON/Markdown 报告到 `outputs/reports`
+- 支持离线 `report` 命令复用已有数据生成报告
 
 详见：[日志分析说明](docs/log_analysis.md)
 
@@ -131,6 +146,12 @@ make check
 ```bash
 make docker-build
 make docker-run
+```
+
+## 发布打包
+
+```bash
+make release-bundle
 ```
 
 ## 目录结构

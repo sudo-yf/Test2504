@@ -24,9 +24,22 @@
 
 - 高置信度事件文本日志
 - SQLite `emotion_records` 表
-- 退出时输出的统计与趋势结果
+- 退出时生成 `outputs/reports/*.json` 与 `outputs/reports/*.md` 报告
+
+## 命令入口
+
+运行前自检：
+
+```bash
+uv run python main.py doctor --check-camera
+```
+
+离线生成报告：
+
+```bash
+uv run python main.py report --mode offline
+```
 
 ## API Key（可选）
 
 若设置 `DEEPSEEK_API_KEY`，系统会在退出阶段调用分析接口生成更详细的文本分析结果。
-

@@ -47,9 +47,14 @@ emotion:
 # Data Management
 data:
   cleanup_interval: 30  # Seconds between data cleanup
-  log_file: "emotion_log.txt"
+  log_file: "data/emotion.log"
   database_path: "data/emotions.db"
   enable_logging: true
+
+# Product Workflow
+product:
+  reports_dir: "outputs/reports"
+  report_sample_size: 500
 
 # DeepSeek API Settings
 api:

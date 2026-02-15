@@ -1,11 +1,4 @@
-from emotisense.app import EmotionDetectionApp
-from emotisense.config import Config
-
-
-def run():
-    app = EmotionDetectionApp(Config())
-    app.run()
-
+from emotisense.cli import main
 
 if __name__ == "__main__":
-    run()
+    main()
