@@ -157,4 +157,6 @@ Test2504/
 - [训练指南](docs/training.md)
 - [GPU 要求](docs/gpu_requirements.md)
 - [日志分析](docs/log_analysis.md)
-
+- [产品战略](docs/PRODUCT_STRATEGY.md)
+- [Roadmap](docs/ROADMAP.md)
+- [贡献指南](CONTRIBUTING.md)

@@ -1,0 +1,24 @@
+name: Bug Report
+description: 提交一个缺陷报告
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 问题描述
+      description: 说明现象、预期行为与影响范围
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 包含命令、配置、数据路径
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境信息
+      description: OS、Python、GPU/CUDA、依赖版本
