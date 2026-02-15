@@ -1,4 +1,4 @@
-.PHONY: sync sync-train lint format test check run download-data download-data-hf train-face finetune-emotion compare install-models docker-build docker-run
+.PHONY: sync sync-train lint format test check run download-data download-data-hf train-face finetune-emotion docker-build docker-run
 
 sync:
 	uv sync
@@ -31,12 +31,6 @@ train-face:
 
 finetune-emotion:
 	uv run python scripts/finetune_emotion.py --data-root data/processed/emotion_cls --device cuda
-
-compare:
-	uv run python scripts/compare_models.py --mode webcam --duration 30
-
-install-models:
-	uv run python scripts/install_models.py
 
 docker-build:
 	docker compose build

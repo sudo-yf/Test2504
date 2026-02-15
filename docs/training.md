@@ -1,9 +1,9 @@
-# Training
+# 训练指南
 
-## 1. Train Face Detector (YOLO-family)
+## 1. 训练人脸检测模型（YOLO Family）
 
 ```bash
-# YOLO family example (yolov8/yolov11/yolov26/face variants)
+# YOLO Family 示例（yolov8/yolov11/yolov26/face 变体）
 uv run python scripts/train_yolo_face.py \
   --model yolov26n.pt \
   --data configs/datasets/face_detection.yaml \
@@ -12,10 +12,10 @@ uv run python scripts/train_yolo_face.py \
   --device 0
 ```
 
-YOLOv26 compatibility:
+YOLOv26 兼容示例：
 
 ```bash
-# Replace with your YOLOv26-compatible checkpoint name
+# 将模型名替换为你使用的 YOLOv26 权重
 uv run python scripts/train_yolo_face.py \
   --model yolov26n.pt \
   --data configs/datasets/face_detection.yaml \
@@ -23,9 +23,9 @@ uv run python scripts/train_yolo_face.py \
   --device 0
 ```
 
-The script supports any Ultralytics-compatible model checkpoint.
+该脚本支持任意 Ultralytics 兼容权重。
 
-## 2. Fine-tune Emotion Classifier
+## 2. 情绪分类微调（Fine-tuning）
 
 ```bash
 uv run python scripts/finetune_emotion.py \
@@ -38,13 +38,7 @@ uv run python scripts/finetune_emotion.py \
   --device cuda
 ```
 
-Outputs are saved to `outputs/train/emotion_finetune`:
+训练产物输出到 `outputs/train/emotion_finetune`：
 
-- `best.pt` (best validation accuracy)
-- `last.pt` (final epoch checkpoint)
-
-## 3. Model Comparison
-
-```bash
-uv run python scripts/compare_models.py --mode webcam --duration 30
-```
+- `best.pt`：验证集最优模型
+- `last.pt`：最后一个 epoch 的模型
