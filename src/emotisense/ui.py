@@ -3,13 +3,13 @@ UI rendering module for EmotiSense.
 Handles display window and visual elements.
 """
 
+import logging
+from typing import List, Optional, Tuple
+
 import cv2
 import numpy as np
-from typing import Tuple, List, Optional
-import logging
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 

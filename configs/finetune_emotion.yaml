@@ -1,0 +1,10 @@
+# Fine-tuning config for emotion classifier
+model: resnet18
+num_classes: 7
+epochs: 20
+batch_size: 32
+lr: 3e-4
+device: cuda
+
+data_root: data/processed/emotion_cls
+output: outputs/train/emotion_finetune

@@ -3,13 +3,13 @@ Video processing module for EmotiSense.
 Handles video capture and frame processing.
 """
 
+import logging
+from typing import Optional, Tuple
+
 import cv2
 import numpy as np
-from typing import Optional, Tuple
-import logging
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 

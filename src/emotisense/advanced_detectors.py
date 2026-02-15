@@ -4,7 +4,8 @@ This module provides state-of-the-art emotion recognition models.
 """
 
 import logging
-from typing import Tuple, Optional, Dict, Any
+from typing import Any, Dict, Optional, Tuple
+
 import numpy as np
 
 logger = logging.getLogger(__name__)

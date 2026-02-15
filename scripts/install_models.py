@@ -147,10 +147,9 @@ FER is a lightweight facial expression recognition library with:
    
    python compare_models.py --mode webcam
 
-For more information, see ADVANCED_MODELS.md
+For more information, see docs/ADVANCED_MODELS.md
     """)
 
 
 if __name__ == '__main__':
     main()
-

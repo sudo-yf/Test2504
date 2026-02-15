@@ -3,14 +3,14 @@ Face and emotion detection module for EmotiSense.
 Handles face detection, eye detection, and emotion analysis.
 """
 
+import logging
+from typing import Any, Dict, List, Optional, Tuple
+
 import cv2
 import numpy as np
-from typing import Tuple, List, Optional, Dict, Any
 from deepface import DeepFace
-import logging
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 

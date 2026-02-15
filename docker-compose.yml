@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  emotisense:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: emotisense:latest
+    container_name: emotisense
+    working_dir: /app
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+    volumes:
+      - ./:/app
+    command: ["uv", "run", "python", "main.py"]
+

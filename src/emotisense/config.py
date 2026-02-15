@@ -6,6 +6,7 @@ Handles loading and accessing configuration from YAML file.
 import os
 from pathlib import Path
 from typing import Any, Dict, Optional
+
 import yaml
 from dotenv import load_dotenv
 
@@ -25,7 +26,7 @@ class Config:
         
         # Determine config file path
         if config_path is None:
-            config_path = Path(__file__).parent.parent / "config.yaml"
+            config_path = Path(__file__).resolve().parents[2] / "config.yaml"
         else:
             config_path = Path(config_path)
             
@@ -142,4 +143,3 @@ def get_config(config_path: Optional[str] = None) -> Config:
         _config_instance = Config(config_path)
         
     return _config_instance
-

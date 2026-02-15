@@ -3,12 +3,12 @@ Emotion analysis module for EmotiSense.
 Handles DeepSeek API integration for emotion trend analysis.
 """
 
-import requests
-from typing import Optional, List
 import logging
+from typing import List, Optional
+
+import requests
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 

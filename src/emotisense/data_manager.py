@@ -3,15 +3,15 @@ Data management module for EmotiSense.
 Handles emotion data storage, logging, and cleanup.
 """
 
-import time
 import gc
-from pathlib import Path
-from typing import List, Dict, Any, Optional
-from dataclasses import dataclass, asdict
 import logging
+import sqlite3
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from .config import Config
-
 
 logger = logging.getLogger(__name__)
 
@@ -53,11 +53,31 @@ class EmotionDataManager:
         data_config = config.data_config
         self.log_file = Path(data_config.get('log_file', 'emotion_log.txt'))
         self.enable_logging = data_config.get('enable_logging', True)
+        self.db_path = Path(data_config.get('database_path', 'data/emotions.db'))
         self.max_records = config.get('emotion.max_data_records', 1000)
         self.cleanup_interval = data_config.get('cleanup_interval', 30)
         
         # Cleanup tracking
         self.last_cleanup_time = time.time()
+        self._init_db()
+
+    def _init_db(self):
+        """Initialize SQLite storage."""
+        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS emotion_records (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    timestamp REAL NOT NULL,
+                    emotion TEXT NOT NULL,
+                    probability REAL NOT NULL
+                )
+                """
+            )
+            conn.execute(
+                "CREATE INDEX IF NOT EXISTS idx_emotion_records_ts ON emotion_records(timestamp)"
+            )
         
     def add_record(
         self,
@@ -86,8 +106,20 @@ class EmotionDataManager:
         )
         
         self.emotion_data.append(record)
+        self._persist_record(record)
         
         return record
+
+    def _persist_record(self, record: EmotionRecord):
+        """Persist a record into SQLite."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.execute(
+                    "INSERT INTO emotion_records (timestamp, emotion, probability) VALUES (?, ?, ?)",
+                    (record.timestamp, record.emotion, record.probability),
+                )
+        except Exception as e:
+            logger.error(f"Error persisting emotion record: {e}")
     
     def log_high_confidence_emotion(self, record: EmotionRecord):
         """
@@ -227,10 +259,28 @@ class EmotionDataManager:
                 'end': self.emotion_data[-1].format_timestamp()
             }
         }
+
+    def get_db_statistics(self) -> Dict[str, Any]:
+        """Get historical statistics from SQLite."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                total = conn.execute("SELECT COUNT(*) FROM emotion_records").fetchone()[0]
+                avg = conn.execute("SELECT AVG(probability) FROM emotion_records").fetchone()[0] or 0.0
+                rows = conn.execute(
+                    "SELECT emotion, COUNT(*) FROM emotion_records GROUP BY emotion"
+                ).fetchall()
+        except Exception as e:
+            logger.error(f"Error getting db statistics: {e}")
+            return {'total_records': 0, 'emotions': {}, 'average_confidence': 0.0}
+
+        return {
+            'total_records': int(total),
+            'emotions': {emotion: int(count) for emotion, count in rows},
+            'average_confidence': float(avg),
+        }
     
     def clear_all_data(self):
         """Clear all emotion data from memory."""
         self.emotion_data.clear()
         gc.collect()
         logger.info("Cleared all emotion data")
-

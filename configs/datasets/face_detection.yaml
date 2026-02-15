@@ -1,0 +1,12 @@
+# YOLO detection dataset config
+# Directory layout example:
+# data/processed/face_det/
+#   images/{train,val}
+#   labels/{train,val}
+
+path: data/processed/face_det
+train: images/train
+val: images/val
+
+names:
+  0: face

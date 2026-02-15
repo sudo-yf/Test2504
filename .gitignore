@@ -1,17 +1,37 @@
-.env
+# Python caches
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
-.Python
-env/
-venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual envs
 .venv/
-ENV/
-.env/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Runtime data
 *.log
-.DS_Store
-.idea/
+data/*.db
+outputs/
+
+# Env files
+.env
+.env.local
+
+# IDE / OS
 .vscode/
-*.swp
-*.swo
+.idea/
+.DS_Store
+Thumbs.db

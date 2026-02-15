@@ -3,15 +3,20 @@ Model comparison tool for emotion detection.
 Compares different emotion recognition models on the same input.
 """
 
-import cv2
-import time
-import numpy as np
-from typing import Dict, List, Tuple
 import logging
+import sys
+import time
+from pathlib import Path
+from typing import Dict, List, Tuple
 
-from src.config import get_config
-from src.detector import EmotionDetector, create_emotion_detector
-from src.advanced_detectors import HSEmotionDetector, FERDetector
+import cv2
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+
+from emotisense.advanced_detectors import FERDetector, HSEmotionDetector
+from emotisense.config import get_config
+from emotisense.detector import EmotionDetector
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -259,4 +264,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

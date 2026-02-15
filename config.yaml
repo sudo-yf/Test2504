@@ -48,6 +48,7 @@ emotion:
 data:
   cleanup_interval: 30  # Seconds between data cleanup
   log_file: "emotion_log.txt"
+  database_path: "data/emotions.db"
   enable_logging: true
 
 # DeepSeek API Settings
@@ -69,4 +70,3 @@ ui:
   face_box_color: [255, 0, 0]  # Blue
   eye_box_color: [0, 255, 0]  # Green
   box_thickness: 2
-
